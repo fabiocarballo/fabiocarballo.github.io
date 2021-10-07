@@ -66,7 +66,7 @@ fun testExpectedBehavior() {
 <p>However, for our situation it didn&rsquo;t fit our needs for two distinct reasons:</p>
 <ol>
 <li>
-<p>Our testing infrastructure is still relying on the deprecated <code>ActivityTestRule</code> - while the <code>createAndroidComposeRule</code> works on top of scenarios. To accommodate this, we would have to perform a migration and it would block the Compose initiative.</p>
+<p>Our testing infrastructure is still relying on the deprecated <code>ActivityTestRule</code> - while the <code>createAndroidComposeRule</code> works on top of <code>ActivityScenario</code>. To accommodate this, we would have to perform a migration and it would block the Compose initiative.</p>
 </li>
 <li>
 <p>For the cases where we want to launch an <code>Activity</code> with a specific start <code>Intent</code>, we weren&rsquo;t able to found an API that allows us to specify the start <code>Intent</code>.</p>
