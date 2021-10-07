@@ -1,0 +1,136 @@
+<!doctype html><html lang=en-us>
+<head>
+<title>Testing Hybrid Apps Flows with emptyComposeRule | Fábio Carballo</title>
+<meta charset=utf-8>
+<meta name=language content="en">
+<meta name=description content="Use emptyComposeRule to test your hybrid app">
+<meta name=keywords content="android ,compose ,testing ,jetpack ,emptyComposeRule">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Testing Hybrid Apps Flows with emptyComposeRule">
+<meta name=twitter:description content="Use emptyComposeRule to test your hybrid app">
+<meta name=twitter:site content="https://twitter.com/fabiocarballo">
+<meta name=twitter:creator content="https://twitter.com/fabiocarballo">
+<link rel="shortcut icon" type=image/png href=/favicon.ico>
+<link type=text/css rel=stylesheet href=/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0=">
+<link type=text/css rel=stylesheet href=/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=">
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/fabiocarballo.github.io\/"},"articleSection":"blog","name":"Testing Hybrid Apps Flows with emptyComposeRule","headline":"Testing Hybrid Apps Flows with emptyComposeRule","description":"Use emptyComposeRule to test your hybrid app","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-10-07 11:17:22 \u002b0200 \u002b0200","dateModified":"2021-10-07 11:17:22 \u002b0200 \u002b0200","url":"https:\/\/fabiocarballo.github.io\/blog\/testing-hybrid-app-flows\/","wordCount":"415","keywords":["android","compose","testing","jetpack","emptyComposeRule","Blog"]}</script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-209706760-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body>
+<div class=burger__container>
+<div class=burger aria-controls=navigation aria-label=Menu>
+<div class="burger__meat burger__meat--1"></div>
+<div class="burger__meat burger__meat--2"></div>
+<div class="burger__meat burger__meat--3"></div>
+</div>
+</div>
+<nav class=nav id=navigation>
+<ul class=nav__list>
+<li>
+<a href=/>about</a>
+</li>
+<li>
+<a class=active href=/blog>blog</a>
+</li>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-209706760-1','auto'),ga('send','pageview'))</script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-209706760-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</ul>
+</nav>
+<main>
+<div class=flex-wrapper>
+<div class=post__container>
+<div class=post>
+<header class=post__header>
+<h1 id=post__title>Testing Hybrid Apps Flows with emptyComposeRule</h1>
+<time datetime="2021-10-07 11:17:22 +0200 +0200" class=post__date>Oct 7 2021</time>
+</header>
+<article class=post__content>
+<p>Recently, we have migrated one of our app screens to Compose - in an experiment that reduced the UI layer codebase by 60%. However, by the time we wanted to test our app we found a problem.</p>
+<p>At work, we have a small set of critical tests that we run as pure E2E tests. Therefore, every test starts by launching the app and traverse several different screens to verify that its expectations are met. In some scenarios we do start the <code>Activity</code> to be tested, allowing us to skip some harder to set-up steps.</p>
+<p>By looking at the general-purpose <a href=https://developer.android.com/jetpack/compose/testing target=_blank rel="noreferrer noopener">documentation</a> to testing with Compose, there are some mentions to the <code>createAndroidComposeRule()</code> for the cases you want to test an <code>Activity</code> that hosts <code>Compose</code> content (which was our case).</p>
+<p>In a general case, this approach is simple enough: you specify the activity you want to launch in the rule, and then you use the same rule to perform assertions on the Compose content:</p>
+<pre><code class=language-kotlin>@get:Rule
+val rule = createAndroidComposeRule&lt;FeatureActivity&gt;()
+
+@Test
+fun testExpectedBehavior() {
+	rule.onNodeWithText(&quot;My text&quot;)
+	    .assertExists()
+}
+</code></pre>
+<p>However, for our situation it didn&rsquo;t fit our needs for two distinct reasons:</p>
+<ol>
+<li>
+<p>Our testing infrastructure is still relying on the deprecated <code>ActivityTestRule</code> - while the <code>createAndroidComposeRule</code> works on top of scenarios. To accommodate this, we would have to perform a migration and it would block the Compose initiative.</p>
+</li>
+<li>
+<p>For the cases where we want to launch an <code>Activity</code> with a specific start <code>Intent</code>, we weren&rsquo;t able to found an API that allows us to specify the start <code>Intent</code>.</p>
+</li>
+</ol>
+<pre><code class=language-kotlin>val rule = createAndroidComposeRule&lt;FeatureActivity&gt;() 
+
+// how can I define different starting `Intent` data for each test?
+</code></pre>
+<p>The traditional <code>ActivityScenario.launch(Intent)</code> would cover this scenario, but the public API of the <code>createAndroidComposeRule</code> didn&rsquo;t offer this option.</p>
+<h2 id=emptycomposerule>emptyComposeRule()<a class=anchor href=#emptycomposerule>#</a></h2>
+<p>Inspecting the source code, I then found the <code>emptyComposeRule()</code>:</p>
+<blockquote>
+<p>A typical use case on Android is when the test needs to launch an Activity (the compose host) after one or more dependencies have been injected.</p>
+</blockquote>
+<p>This rule suited our needs since it allows an independent launch/setup of the <code>Activity</code> to be launched. This way all we have to do is to declare it, define how you want to launch your <code>Activity</code>, and then use the rule to assert your <code>Compose</code> views.</p>
+<p>A good example of usage would be:</p>
+<pre><code class=language-kotlin>@get:Rule
+val composeRule = createEmptyComposeRule()
+
+@Test
+fun testExpectedBehavior() {
+   val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+   val intent = Intent(targetContext, FeatureActivity::class.java)
+       .putExtra(&quot;id&quot;, &quot;12345&quot;)
+   val scenario = ActivityScenario.launch(intent)
+   
+   composeRule
+      .onNodeWithText(&quot;My Text&quot;)
+      .assertItExists()
+}
+</code></pre>
+<p>I hope this helps you.</p>
+<p>Follow me on <a href=https://twitter.com/@fabiocarballo target=_blank rel="noreferrer noopener">Twitter</a></p>
+</article>
+<ul class=tags__list>
+<li class=tag__item>
+<a class=tag__link href=https://fabiocarballo.github.io/tags/compose/>Compose</a>
+</li>
+<li class=tag__item>
+<a class=tag__link href=https://fabiocarballo.github.io/tags/testing/>Testing</a>
+</li></ul>
+<div class=pagination>
+</div>
+<footer class=post__footer>
+<div class=social-icons>
+<a class=social-icons__link title=Twitter href=https://twitter.com/fabiocarballo target=_blank rel="me noopener">
+<div class=social-icons__icon style=background-image:url(https://fabiocarballo.github.io/svg/twitter.svg)></div>
+</a>
+<a class=social-icons__link title=GitHub href=https://github.com/fabiocarballo target=_blank rel="me noopener">
+<div class=social-icons__icon style=background-image:url(https://fabiocarballo.github.io/svg/github.svg)></div>
+</a>
+<a class=social-icons__link title=LinkedIn href=https://www.linkedin.com/in/fabiocarballo/ target=_blank rel="me noopener">
+<div class=social-icons__icon style=background-image:url(https://fabiocarballo.github.io/svg/linkedin.svg)></div>
+</a>
+</div>
+<p>© 2021</p>
+</footer>
+</div>
+</div>
+</div>
+</main>
+<script src=/js/index.min.575dda8d49ee02639942c63564273e6da972ab531dda26a08800bdcb477cbd7f.js integrity="sha256-V13ajUnuAmOZQsY1ZCc+balyq1Md2iagiAC9y0d8vX8=" crossorigin=anonymous></script>
+<script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script>
+<script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script>
+</body>
+</html>
