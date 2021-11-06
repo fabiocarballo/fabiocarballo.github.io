@@ -16,7 +16,7 @@
 <link rel="shortcut icon" type=image/png href=/favicon.ico>
 <link type=text/css rel=stylesheet href=/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0=">
 <link type=text/css rel=stylesheet href=/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=">
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/fabiocarballo.github.io\/"},"articleSection":"blog","name":"Multi-Theme Screenshot Tests in Jetpack Compose","headline":"Multi-Theme Screenshot Tests in Jetpack Compose","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-11-06 17:44:01 \u002b0100 \u002b0100","dateModified":"2021-11-06 17:44:01 \u002b0100 \u002b0100","url":"https:\/\/fabiocarballo.github.io\/blog\/multi_theme_screenshots_tests_in_compose\/","wordCount":"923","keywords":["android","compose","testing","screenshot","Blog"]}</script>
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/fabiocarballo.github.io\/"},"articleSection":"blog","name":"Multi-Theme Screenshot Tests in Jetpack Compose","headline":"Multi-Theme Screenshot Tests in Jetpack Compose","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-11-06 17:44:01 \u002b0100 \u002b0100","dateModified":"2021-11-06 17:44:01 \u002b0100 \u002b0100","url":"https:\/\/fabiocarballo.github.io\/blog\/multi_theme_screenshots_tests_in_compose\/","wordCount":"931","keywords":["android","compose","testing","screenshot","Blog"]}</script>
 <script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-209706760-1','auto'),ga('send','pageview'))</script>
 <script async src=https://www.google-analytics.com/analytics.js></script>
 </head>
@@ -87,7 +87,10 @@ several different themes. In my vision, we would be able to only write one singl
    fun paragraph() {
        composeTestRule.setContent {
           Theme {
-              Text(text = &quot;This is a paragraph.&quot;, style = Theme.typography.paragraph)
+              Text(
+              	 text = &quot;This is a paragraph.&quot;, 
+                 style = Theme.typography.paragraph
+              )
            }
        }
     
@@ -125,17 +128,26 @@ several different themes. In my vision, we would be able to only write one singl
     
     @Test
     fun paragraph() = runScreenshotTest {
-       Text(text = &quot;This is a paragraph.&quot;, style = Theme.typography.paragraph)
+       Text(
+       	  text = &quot;This is a paragraph.&quot;, 
+       	  style = Theme.typography.paragraph
+       )
     }
 
     @Test
     fun label() = runScreenshotTest {
-        Text(text = &quot;This is a label.&quot;, style = Theme.typography.label)
+        Text(
+           text = &quot;This is a label.&quot;, 
+           style = Theme.typography.label
+        )
     }
 
     @Test
     fun display() = runScreenshotTest {
-        Text(text = &quot;This is a display.&quot;, style = Theme.typography.display)
+        Text(
+            text = &quot;This is a display.&quot;, 
+            style = Theme.typography.display
+        )
     }
 }
 </code></pre>
