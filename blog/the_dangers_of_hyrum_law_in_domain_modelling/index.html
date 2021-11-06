@@ -66,7 +66,7 @@
 <li><code>ProductsService</code> - an internal abstraction over the product service (backend)</li>
 </ul>
 <p>Below, you can see the high-level picture of how each one depends on the other. It should then be clear that <code>GetProductsUseCase</code> is part of our <code>domain</code> layer, while <code>ProductsRepository/Api</code> is part of our data layer.</p>
-<p><img src=/hyrum_law_example_schema.png style=margin-top::16px></p>
+<img src=/hyrum_law_example_schema.png style=margin-top::16px>
 <p>These three abstractions definition could be declared as the following:</p>
 <pre><code class=language-kotlin>interface ProductsService {
 
@@ -146,6 +146,10 @@ inline class Category(val value: String) {
 <a class=pagination__item href=https://fabiocarballo.github.io/blog/testing-hybrid-app-flows/>
 <span class=pagination__label>Previous Post</span>
 <span class=pagination__title>Testing Hybrid Apps Flows with emptyComposeRule</span>
+</a>
+<a class=pagination__item href=https://fabiocarballo.github.io/blog/scale-up-your-screenshot-testing./>
+<span class=pagination__label>Next Post</span>
+<span class=pagination__title>Multi-Theme Screenshots in Jetpack Compose</span>
 </a>
 </div>
 <footer class=post__footer>
