@@ -16,7 +16,7 @@
 <link rel="shortcut icon" type=image/png href=/favicon.ico>
 <link type=text/css rel=stylesheet href=/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0=">
 <link type=text/css rel=stylesheet href=/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=">
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/fabiocarballo.github.io\/"},"articleSection":"blog","name":"Multi-Theme Screenshot Tests in Jetpack Compose","headline":"Multi-Theme Screenshot Tests in Jetpack Compose","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-11-06 17:44:01 \u002b0100 \u002b0100","dateModified":"2021-11-06 17:44:01 \u002b0100 \u002b0100","url":"https:\/\/fabiocarballo.github.io\/blog\/multi_theme_screenshots_tests_in_compose\/","wordCount":"931","keywords":["android","compose","testing","screenshot","Blog"]}</script>
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/fabiocarballo.github.io\/"},"articleSection":"blog","name":"Multi-Theme Screenshot Tests in Jetpack Compose","headline":"Multi-Theme Screenshot Tests in Jetpack Compose","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-11-06 17:44:01 \u002b0100 \u002b0100","dateModified":"2021-11-06 17:44:01 \u002b0100 \u002b0100","url":"https:\/\/fabiocarballo.github.io\/blog\/multi_theme_screenshots_tests_in_compose\/","wordCount":"865","keywords":["android","compose","testing","screenshot","Blog"]}</script>
 <script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-209706760-1','auto'),ga('send','pageview'))</script>
 <script async src=https://www.google-analytics.com/analytics.js></script>
 </head>
@@ -50,9 +50,9 @@
 <time datetime="2021-11-06 17:44:01 +0100 +0100" class=post__date>Nov 6 2021</time>
 </header>
 <article class=post__content>
-<p>I have been working a lot with a design system and one of the recent challenges was to add support to screenshot testing while making it easy to scale for
-several different themes. In my vision, we would be able to only write one single test, but automatically generate the screenshots for all the themes in one single run</p>
-<p>Meanwhile, I reached a solution that can be seen in this sample project created for this purpose. In this project, we have a really simple design system and we can see an example of how to generate screenshot tests that will verify the system&rsquo;s Typography in both <em>Light</em> and <em>Dark</em> theme.</p>
+<p>I have been working a lot with a design system, and one of the recent challenges was to add support to screenshot testing while making it easy to scale for
+several different themes. In my vision, we would be able only to write one single test, but automatically generate the screenshots for all the themes in one single run.</p>
+<p>Meanwhile, I reached a solution that can be seen in this <a href=https://github.com/fabiocarballo/compose-design-system target=_blank rel="noreferrer noopener">sample project</a> created for this purpose. In this project, we have a simple design system and we can see an example of how to generate screenshot tests that will verify the system&rsquo;s Typography in both <em>Light</em> and <em>Dark</em> theme.</p>
 <br>
 <table>
 <thead>
@@ -68,7 +68,7 @@ several different themes. In my vision, we would be able to only write one singl
 </tr>
 </tbody>
 </table>
-<p>P.s - if you want to look into the code you can look at this specific <a href=https://github.com/fabiocarballo/compose-design-system/pull/1 target=_blank rel="noreferrer noopener">PR</a> where I add the multi-theme screenshot support.</p>
+<p>P.s - if you want to look into the code, you can look at this specific <a href=https://github.com/fabiocarballo/compose-design-system/pull/1 target=_blank rel="noreferrer noopener">PR</a> where I add the multi-theme screenshot support.</p>
 <p>Let&rsquo;s go step by step of what was the thought process into getting into the final solution:</p>
 <h2 id=1-integrating-with-shot>1. Integrating with Shot<a class=anchor href=#1-integrating-with-shot>#</a></h2>
 <p>To be able to have screenshot tests, we are integrating <a href=https://github.com/pedrovgs/Shot target=_blank rel="noreferrer noopener">Shot</a> as our <em>screenshot testing tool</em>.</p>
@@ -98,7 +98,7 @@ several different themes. In my vision, we would be able to only write one singl
    }
 }
 </code></pre>
-<p>By doing this we then have a screenshot generated in our module under <code>app/screenshots/com.fabiocarballo.designsystem.TypographyTest.label</code></p>
+<p>We then have a screenshot generated in our module under <code>app/screenshots/com.fabiocarballo.designsystem.TypographyTest.label</code></p>
 <p><img src=https://user-images.githubusercontent.com/6845042/140614050-73d4d21b-a64d-4865-8c04-c91ea574f18a.png alt="com fabiocarballo designsystem TypographyTest_com fabiocarballo designsystem TypographyTest_paragraph_light"></p>
 <h2 id=2-improving-the-api>2. Improving the API<a class=anchor href=#2-improving-the-api>#</a></h2>
 <p>At this point, we know how to make a screenshot test. However, as we grow the number of tests we would be having a lot of structural duplication:</p>
@@ -151,7 +151,7 @@ several different themes. In my vision, we would be able to only write one singl
     }
 }
 </code></pre>
-<p>The goal here was to make a test being almost as easy as just declare the composable that should be screenshotted.</p>
+<p>The goal was to make a test being almost as easy as just declaring the composable that should be screenshotted.</p>
 <p>By now, our screenshots would be:</p>
 <table>
 <thead>
@@ -170,7 +170,7 @@ several different themes. In my vision, we would be able to only write one singl
 </tbody>
 </table>
 <h2 id=3-add-support-to-multi-theme>3. Add support to multi-theme<a class=anchor href=#3-add-support-to-multi-theme>#</a></h2>
-<p>At this point, we have now the capability to easily generate our screenshots for our <em>Light Theme</em>. As a next step, we want to use the same codebase and automatically generate screenshots also to <em>Dark Theme</em>.</p>
+<p>At this point, we now can quickly generate screenshots for our <em>Light Theme</em>. As a next step, we want to use the same codebase and automatically generate screenshots also to <em>Dark Theme</em>.</p>
 <p>For that, we are going to enrich our <code>DesignSystemScreenshotTest</code> with the capability to run parameterized tests. Hence, we are using <a href=https://github.com/google/TestParameterInjector target=_blank rel="noreferrer noopener">Test Parameter Injector</a> to build the parameterized behavior.</p>
 <p>What we are going to do first is to declare a private enum with the themes we want to parameterize with:</p>
 <pre><code class=language-kotlin>private enum class ThemeMode { LIGHT, DARK }
@@ -205,29 +205,11 @@ abstract class DesignSystemScreenshotTest : ScreenshotTest {
 }
 </code></pre>
 <p>However, we still have one small problem: <code>Shot</code> default behavior is to name the screenshot as <em>&ldquo;ClassName_MethodName&rdquo;</em>. This way, we record the screenshots for the test in both modes, but the last run always overrides the first one.</p>
-<p>To fix that, we are going to generate the screenshot name by ourselves with the help of this helper method:</p>
-<pre><code class=language-kotlin>private fun extractClassAndMethodName(): String {
-    val stack = Throwable().stackTrace
-
-    stack.forEach { element -&gt;
-        try {
-            val clazz = Class.forName(element.className)
-            val method = clazz.getMethod(element.methodName)
-
-            if (method.annotations.any { it.annotationClass == Test::class }) {
-                return &quot;${clazz.canonicalName}_${method.name}&quot;
-            }
-        } catch (ignored: NoSuchMethodException) {
-            // do nothing
-        } catch (ignored: ClassNotFoundException) {
-            // do nothing
-        }
-    }
-
-    error(&quot;Couldn't parse the name&quot;)
-}
+<p>To fix that, we are going to generate the screenshot name by ourselves with the help of the <code>TestName</code> rule from junit (thanks <a href=https://twitter.com/A_K_Abd_Elmeged target=_blank rel="noreferrer noopener">Ahmed Abdelmeged</a> for the tip!!):</p>
+<pre><code class=language-kotlin>@get:Rule
+val testNameRule = TestName()
 </code></pre>
-<p>This method will simply use the <code>StackTrace</code> to figure out what is the test class and method name. We can then use this information together with the <code>ThemeMode</code> that is being used for the test to generate a test name as:</p>
+<p>We can then use this information together with the <code>ThemeMode</code> that is being used for the test to generate a test name as:</p>
 <ul>
 <li><em>TypographyTest_paragraph_light</em></li>
 <li><em>TypographyTest_paragraph_dark</em></li>
@@ -238,6 +220,9 @@ abstract class DesignSystemScreenshotTest : ScreenshotTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    @get:Rule
+    val testNameRule = TestName()
 
     @TestParameter
     private lateinit var themeMode: ThemeMode
@@ -253,7 +238,7 @@ abstract class DesignSystemScreenshotTest : ScreenshotTest {
             )
         }
 
-        val name = &quot;${extractClassAndMethodName()}_${themeMode.name.lowercase()}&quot;
+        val name = &quot;${testNameRule.methodName}_${themeMode.name.lowercase()}&quot;
 
         compareScreenshot(
             rule = composeTestRule,
